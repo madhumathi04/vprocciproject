@@ -91,7 +91,7 @@ pipeline{
                 )
             }
         }
-    stage('Ansible Deploy to Prod')
+    stage('Ansible Deploy to Prod'){
             Steps {
 	            ansiblePlaybook{
 	             inventory : 'ansible/prod.Inventory',
@@ -110,9 +110,9 @@ pipeline{
                  build: "$(env.BUILD)",
                  artifactid: "vproapp",
                  vprofile_version: "vproapp-%(env.BUILD)-$(env.TIME).war
-	        }
+	            }
+            }
         }
-    }
     stage('Build App Image') {
             steps {
                 script {
