@@ -11,7 +11,7 @@ pipeline{
          NEXUS_PASS = 'admin123'
          RELEASE_REPO = 'vprofile-release'
          CENTRAL_REPO = 'vpro-maven-central'
-         NEXUSIP = '100.26.186.13'
+         NEXUSIP = '3.87.231.175 '
          NEXUSPORT = '8081'
          NEXUS_GRP_REPO = 'vpro-maven-group'
          NEXUS_LOGIN = 'nexuslogin' 
@@ -91,15 +91,38 @@ pipeline{
                 )
             }
         }
-         stage('Build App Image') {
+    stage('Ansible Deploy to Prod')
+            Steps {
+	            ansiblePlaybook{
+	             inventory : 'ansible/prod.Inventory',
+	             playbook  : 'ansible/site.yml'
+                 installation : 'ansible',
+                 colorized : true,
+                 credentialsId: 	'applogin-prod',
+                 disableHostKeyChecking: true,
+                 extraVars   :  {
+                 USER: "admin",
+                 PASS: "$(NEXUSPASS)",
+                 nexusip: "3.87.231.175 "
+                 reponame: "vprofile-release",
+                 groupid: "QA"
+                 time: "$(env.TIME)"
+                 build: "$(env.BUILD)",
+                 artifactid: "vproapp",
+                 vprofile_version: "vproapp-%(env.BUILD)-$(env.TIME).war
+	        }
+        }
+    }
+    stage('Build App Image') {
             steps {
                 script {
                     dockerImage = docker.build( appRegistry + ":$BUILD_NUMBER", "./Docker-files/app/multistage/")
                 }
             }
         }
+
        
-        stage('Upload App Image') {
+    stage('Upload App Image') {
           steps{
             script {
               docker.withRegistry( vprofileRegistry, registryCredential ) {
