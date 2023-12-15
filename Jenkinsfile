@@ -91,28 +91,6 @@ pipeline{
                 )
             }
         }
-    stage('Ansible Deploy to Prod'){
-            Steps {
-	            ansiblePlaybook{
-	             inventory : 'ansible/prod.Inventory',
-	             playbook  : 'ansible/site.yml'
-                 installation : 'ansible',
-                 colorized : true,
-                 credentialsId: 	'applogin-prod',
-                 disableHostKeyChecking: true,
-                 extraVars   :  {
-                 USER: "admin",
-                 PASS: "$(NEXUSPASS)",
-                 nexusip: "3.87.231.175"
-                 reponame: "vprofile-release",
-                 groupid: "QA"
-                 time: "$(env.TIME)"
-                 build: "$(env.BUILD)",
-                 artifactid: "vproapp",
-                 vprofile_version: "vproapp-%(env.BUILD)-$(env.TIME).war
-	            }
-            }
-        }
     stage('Build App Image') {
             steps {
                 script {
