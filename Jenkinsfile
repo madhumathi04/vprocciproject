@@ -23,8 +23,6 @@ pipeline{
                                defualtValue:'',
                                 name: 'TIME',
                             )
-
-                            )
                         ])
                     ])
                 }
