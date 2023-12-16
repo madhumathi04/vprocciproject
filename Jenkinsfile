@@ -109,7 +109,7 @@ pipeline{
                     time: "$(env.TIME)"
                     build: "$(env.BUILD)",
                     artifactid: "vproapp",
-                    vprofile_version: "vproapp-${env.BUILD}-${env.BUILD_TIME}.war"
+                    vprofile_version: "vproapp-${env.BUILD}-${env.TIME}.war"
                 ]
             ])
 	    }
