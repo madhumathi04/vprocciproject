@@ -91,33 +91,28 @@ pipeline{
                 )
             }
         }
-    stage('Build App Image') {
-            steps {
-                script {
-                    dockerImage = docker.build( appRegistry + ":$BUILD_NUMBER", "./Docker-files/app/multistage/")
-                }
-            }
-        }
-
-       
-    stage('Upload App Image') {
-          steps{
-            script {
-              docker.withRegistry( vprofileRegistry, registryCredential ) {
-                dockerImage.push("$BUILD_NUMBER")
-                dockerImage.push('latest')
-              }
-            }
-          }
-        }
-
-        stage('Deploy to ECS staging') {
-            steps {
-                withAWS(credentials: 'awscreds', region: 'us-west-1') {
-                    sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
-                }
-            }
-        }
+        stage('Ansible Deploy to Prod'){
+            Steps {
+	            ansiblePlaybook([
+	            inventory : 'ansible/stage.inventory',
+	            playbook  : 'ansible/site.yml'
+                installation : 'ansible',
+                colorized : true,
+                credentialsId: 	'applogin',
+                disableHostKeyChecking: true,
+                extraVars   :  [
+                    USER: "admin",
+                    PASS: "admin123",
+                    nexusip: "54.158.142.54"
+                    reponame: "vprofile-release",
+                    groupid: "QA"
+                    time: "$(env.BUILD_TIMESTAMP)"
+                    build: "$(env.BUILD_ID)",
+                    artifactid: "vproapp",
+                    vprofile_version: "vproapp-$(env.BUILD_ID)-$(env.BUILD_TIMESTAMP).war"
+                ]
+            ])
+	    }
     }
     post {
         always {
