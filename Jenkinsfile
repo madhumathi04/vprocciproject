@@ -43,7 +43,7 @@ pipeline{
                     nexusip: "54.158.142.54"
                     reponame: "vprofile-release",
                     groupid: "QA"
-                    time: "$(env.TIME)"
+                    time: "$(env.TIME)",
                     build: "$(env.BUILD)",
                     artifactid: "vproapp",
                     vprofile_version: "vproapp-${env.BUILD}-${env.TIME}.war"
