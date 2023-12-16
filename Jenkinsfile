@@ -32,7 +32,7 @@ pipeline{
             Steps {
 	            ansiblePlaybook([
 	            inventory : 'ansible/prod.inventory',
-	            playbook  : 'ansible/site.yml'
+	            playbook  : 'ansible/site.yml',
                 installation : 'ansible',
                 colorized : true,
                 credentialsId: 	'applogin',
@@ -43,8 +43,8 @@ pipeline{
                     nexusip: "54.158.142.54"
                     reponame: "vprofile-release",
                     groupid: "QA",
-                    time: "\$(env.TIME)",
-                    build: "\$(env.BUILD)",
+                    time: "(env.TIME)",
+                    build: "(env.BUILD)",
                     artifactid: "vproapp",
                     vprofile_version: "vproapp-${env.BUILD}-${env.TIME}.war"
                 ]
