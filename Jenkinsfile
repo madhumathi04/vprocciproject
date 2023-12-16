@@ -42,7 +42,7 @@ pipeline{
                     PASS: "admin123",
                     nexusip: "54.158.142.54"
                     reponame: "vprofile-release",
-                    groupid: "QA"
+                    groupid: "QA",
                     time: "$(env.TIME)",
                     build: "$(env.BUILD)",
                     artifactid: "vproapp",
