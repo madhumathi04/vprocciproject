@@ -17,7 +17,7 @@ pipeline{
                         parameters([
                             string(
                             defualtValue:'',
-                             name: 'BUILD;,
+                             name: 'BUILD',
                             ),
                             string(
                                defualtValue:'',
