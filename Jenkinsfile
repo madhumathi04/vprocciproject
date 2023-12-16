@@ -51,7 +51,7 @@ pipeline{
             ])
 	    }
     }
-    post {
+    post{
         always {
             echo 'Slack Notifications.'
             slackSend channel: '#jenkinscicd',
